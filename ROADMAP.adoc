@@ -1,0 +1,23 @@
+// SPDX-License-Identifier: PMPL-1.0-or-later
+= ViableSystems.jl Roadmap
+
+== v0.1.0 - The Core Models (Current)
+* [x] Basic VSM structure (Systems 1-5).
+* [x] Algedonic alarm simulation.
+* [x] CATWOE analysis and Root Definition generator.
+* [x] Variety check (Ashby's Law).
+
+== v0.2.0 - Rich Pictures & Connectivity
+* [ ] **Rich Picture Schema**: Metadata-heavy graph structures for qualitative system mapping.
+* [ ] **Recursive VSM**: Automatic nesting of VSM models (System 1 can be another VSM).
+* [ ] **Inter-System Balance**: Quantitative modeling of the tension between S3 (Inside/Now) and S4 (Outside/Then).
+
+== v0.3.0 - Dynamic Viability
+* [ ] **Differential Equations**: Link with `DifferentialEquations.jl` to model system stability over time.
+* [ ] **Stability Thresholds**: Identify 'Tipping Points' where a system ceases to be viable.
+* [ ] **Agent-Based Integration**: Use `Agents.jl` to simulate behavior within VSM subsystems.
+
+== Future Horizons (v1.0+)
+* [ ] **Axiomatic Viability**: Use `Axiom.jl` to formally prove that a given VSM structure satisfies specific "Survival Invariants."
+* [ ] **Planetary Governance Models**: Scale VSM to model global ecological and political coordination.
+* [ ] **Neuro-Cybernetics**: Link organizational viability to cognitive science models (linking to `Causals.jl` cognitive track).

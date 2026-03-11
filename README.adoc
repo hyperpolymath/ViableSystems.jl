@@ -1,0 +1,55 @@
+// SPDX-License-Identifier: PMPL-1.0-or-later
+= ViableSystems.jl
+:toc: macro
+:toclevels: 2
+
+image:https://img.shields.io/badge/Project-Topology-9558B2[Topology,link="TOPOLOGY.md"]
+image:https://img.shields.io/badge/Completion-60%25-yellow[60%,link="TOPOLOGY.md"]
+image:https://img.shields.io/badge/License-PMPL--1.0-blue.svg[License: PMPL-1.0]
+image:https://img.shields.io/badge/Theory-Cybernetics-red.svg[Cybernetics]
+
+*Computational Organizational Cybernetics & Soft Systems Thinking.*
+
+toc::[]
+
+== Overview
+
+ViableSystems.jl is a Julia toolkit for modeling and analyzing complex human and organizational systems. It provides formal structures for **Stafford Beer's Viable System Model (VSM)** and **Peter Checkland's Soft Systems Methodology (SSM)**.
+
+== Core Capabilities
+
+* **Viable System Model (VSM)**: Model the 5 recursive systems of viability (Operations, Coordination, Control, Intelligence, Policy).
+* **Algedonic Loops**: Implement alarm signals that bypass hierarchies for rapid self-healing.
+* **Law of Requisite Variety**: Tools to calculate and balance complexity between environment and system.
+* **Soft Systems Methodology (SSM)**: Structured tools for ill-structured problems, including CATWOE analysis and Root Definitions.
+
+== Usage
+
+[source,julia]
+----
+using ViableSystems
+
+# Define a simple viable organization
+org = ViableOrganization(
+    "Research Lab",
+    [System1(:Physics, "High energy experiments", true)],
+    "Shared Calendar",
+    "Lab Safety Manager",
+    "Strategic Planning Committee",
+    "Board of Directors",
+    1
+)
+
+# Trigger an emergency alert
+algedonic_alert(org, "Equipment failure in System 1!")
+
+# Perform a CATWOE analysis
+analysis = CATWOE(
+    "Researchers", "Coders", "Input -> Verified Code",
+    "Open Science", "Hyperpolymath", "Cloud Infrastructure"
+)
+println(RootDefinition(analysis))
+----
+
+== License
+Palimpsest-MPL-1.0 License.
