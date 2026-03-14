@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MPL-2.0
 name = "ViableSystems"
 uuid = "a6c07668-559f-42e4-88f9-b00ef4c02498"
 authors = ["Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>"]
