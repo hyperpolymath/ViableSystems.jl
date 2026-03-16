@@ -1,0 +1,26 @@
+# SPDX-License-Identifier: PMPL-1.0-or-later
+# Clade declaration — part of the gv-clade-index registry
+# See: https://github.com/hyperpolymath/gv-clade-index
+
+[identity]
+uuid = "67460914-612c-5e0f-9412-2d9a2109b018"
+primary-forge = "github"
+primary-owner = "hyperpolymath"
+canonical-name = "ViableSystems.jl"
+prefixed-name = "dx-ViableSystems.jl"
+
+[clade]
+primary = "dx"
+secondary = []
+assigned = "2026-03-16"
+rationale = ""
+
+[forges]
+github = "hyperpolymath/ViableSystems.jl"
+gitlab = "hyperpolymath/ViableSystems.jl"
+bitbucket = "hyperpolymath/ViableSystems.jl"
+
+[lineage]
+type = "standalone"
+parent = "Julia package — viable systems model"
+born = "2026-03-16"
