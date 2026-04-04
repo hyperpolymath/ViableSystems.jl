@@ -1,34 +1,156 @@
 // SPDX-License-Identifier: PMPL-1.0-or-later
 = ViableSystems.jl — Show Me The Receipts
+Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>
 :toc:
 :icons: font
 
-The README makes claims. This file backs them up.
+The README makes claims. This file backs them up with file paths, honest caveats,
+and a description of what is actually implemented in each submodule.
 
 [quote, README]
 ____
-ViableSystems.jl is a Julia toolkit for modeling and analyzing complex human and organizational systems. It provides formal structures for **Stafford Beer's Viable System Model (VSM)** and **Peter Checkland's Soft Systems Methodology (SSM)**.
+ViableSystems.jl is a Julia toolkit for modeling and analyzing complex human and
+organizational systems. It provides formal structures for Stafford Beer's Viable
+System Model (VSM) and Peter Checkland's Soft Systems Methodology (SSM).
+Core capabilities: VSM Systems 1-5 with algedonic loops; Law of Requisite Variety
+tools; SSM CATWOE analysis and Root Definitions.
 ____
 
-== Technology Choices
+== What It Actually Does Today
+
+=== Claim: Viable System Model with five recursive systems and algedonic alerts
+
+*Fully implemented at the data-model level.* `src/VSM.jl` provides:
+
+- `System1(id::Symbol, activity::String, local_management::Bool)` — operational unit
+- `ViableOrganization` — mutable struct holding one `System1` vector (S1 operational
+  units), S2 coordination string, S3 control string, S4 intelligence string,
+  S5 policy string, and `recursion_level::Int`
+- `algedonic_alert(org, message)` — prints the emergency bypass signal and returns
+  `nothing`; the test verifies it does not throw
+- `check_variety(env_variety, sys_variety)` — returns a result struct with
+  `balanced::Bool`, `gap::Int`, and `advice::String`; verified for unbalanced
+  (gap=5, advice contains "Increase"), balanced (advice contains "sufficient"),
+  and edge cases (zero complexity, large gap=999)
+
+The test suite also verifies `ViableOrganization` is mutable — field mutation and
+`push!` on the S1 operations vector both work correctly.
+
+=== Claim: Soft Systems Methodology with CATWOE analysis and Root Definitions
+
+*Fully implemented.* `src/SSM.jl` provides:
+
+- `CATWOE(customers, actors, transformation, worldview, owner, environment)` — a
+  six-field struct for structured problem analysis
+- `RootDefinition(c::CATWOE) -> String` — generates a human-readable root definition
+  sentence; the test verifies all six CATWOE fields appear in the output
+- `analyze_problem(description::String) -> String` — returns a rich-picture analysis
+  prompt string; verified to contain the phrase "rich picture"
+
+=== Claim: Law of Requisite Variety calculations
+
+*Implemented in `check_variety`.* The function computes the variety gap (environmental
+complexity minus system variety) and returns structured advice. `balanced = sys_variety >= env_variety`.
+This is the foundational Ashby's Law of Requisite Variety check, not a full
+variational optimisation.
+
+=== Claim: Optimisation via simulated annealing and genetic algorithms
+
+*Interface complete; bodies are placeholders.* `src/optimization.jl` exports
+`simulated_annealing_optimize(cost_fn, initial_state; temp, cooling)` and
+`genetic_algorithm_optimize(population, fitness_fn)`. Both accept the correct
+argument types and return their inputs unchanged (placeholder). The test suite
+documents this honestly.
+
+== How It Works
+
+Module load sequence in `src/ViableSystems.jl`:
+
+. Includes `VSM.jl` — exports `System1`, `System2`–`System5`, `ViableOrganization`,
+  `algedonic_alert`, `check_variety`.
+. Includes `SSM.jl` — exports `CATWOE`, `RootDefinition`, `analyze_problem`.
+. Includes `optimization.jl` — exports `simulated_annealing_optimize`,
+  `genetic_algorithm_optimize`.
+. Includes `boundary.jl` — exports `SystemBoundaryObject`, `SharedModel`,
+  `create_boundary_object`.
+
+Boundary objects (`src/boundary.jl`) represent shared models between VSM systems —
+e.g., a cross-S3-S4 dashboard. `create_boundary_object(name, concepts, systems)`
+constructs a `SharedModel` and wraps it in a `SystemBoundaryObject`.
+
+Runtime dependencies (`Graphs`, `JSON3`, `DataFrames`) support graph representation
+of organisational topology and JSON serialisation of system models.
+
+== Dogfooded Across The Account
 
 [cols="1,2"]
 |===
-| Technology | Learn More
+| Project | Connection
 
-| **Julia** | https://julialang.org
+| `hypatia` (CI intelligence)
+| Hypatia's blackboard architecture (see `hypatia-blackboard-architecture.md`) is
+  directly modelled on VSM Systems 3-4: the control/audit layer (S3) and the
+  intelligence/environment-scanning layer (S4). ViableSystems.jl formalises the
+  cybernetic structure Hypatia implements pragmatically.
+
+| `ambientops` (personal-sysadmin)
+| SoftwareSovereign's policy enforcement hierarchy maps to VSM recursion levels:
+  individual package managers are S1 operations; SoftwareSovereign is S3 control.
+  ViableSystems provides the conceptual framework.
+
+| `developer-ecosystem/julia-ecosystem/`
+| Catalogued in the organisational-modelling section of the Julia ecosystem index.
+
+| `gitbot-fleet`
+| The gitbot fleet (rhodibot, echidnabot, sustainabot, glambot, seambot, finishbot)
+  is designed as a VSM S2 coordination layer; ViableSystems.jl provides the formal
+  model for analysing bot coordination variety vs. repository variety.
 |===
 
 == File Map
 
-[cols="1,2"]
+[cols="1,3"]
 |===
 | Path | What's There
 
-| `src/` | Source code
-| `test(s)/` | Test suite
+| `src/ViableSystems.jl`
+| Top-level module: four submodule includes, re-exports of all public symbols.
+
+| `src/VSM.jl`
+| `VSM` submodule: `System1`–`System5` structs; `ViableOrganization` mutable struct
+  with five system fields and recursion level; `algedonic_alert`; `check_variety`
+  with variety-gap calculation and advice generation.
+
+| `src/SSM.jl`
+| `SSM` submodule: `CATWOE` six-field struct; `RootDefinition` sentence generator;
+  `analyze_problem` rich-picture prompt builder.
+
+| `src/optimization.jl`
+| `SystemOptimization` submodule: `simulated_annealing_optimize` (placeholder,
+  accepts `temp` and `cooling` kwargs); `genetic_algorithm_optimize` (placeholder).
+
+| `src/boundary.jl`
+| `BoundaryObjects` submodule: `SharedModel(name, agreed_concepts)`;
+  `SystemBoundaryObject(name, model, interface_points)`; `create_boundary_object`
+  factory function.
+
+| `test/runtests.jl`
+| ~150 lines: `System1` and `ViableOrganization` construction and mutation;
+  `algedonic_alert` no-throw; `check_variety` correctness across five cases;
+  `CATWOE` field access; `RootDefinition` content validation (all six fields
+  appear in output); `analyze_problem` contains "rich picture"; optimisation
+  placeholder return values; boundary object construction including empty-concept
+  and single-system edge cases. Chains to `e2e_test.jl` and `property_test.jl`.
+
+| `Project.toml`
+| Package identity (uuid `a6c07668...`), `Graphs`, `JSON3`, `DataFrames`
+  dependencies, Julia ≥ 1.10.
+
+| `TOPOLOGY.md`
+| Dependency graph and VSM recursion diagram for the package's own architecture.
 |===
 
 == Questions?
 
-Open an issue or reach out directly — happy to explain anything in more detail.
+Open an issue or reach out — happy to discuss the VSM recursion model or the
+intended optimisation algorithm designs.
