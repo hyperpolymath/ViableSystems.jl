@@ -3,9 +3,6 @@
 zig = "latest"
 bun = "latest"
 
-# Package managers
-go-task = "latest"
-
 # Formatting & Linting
 shfmt = "latest"
 stylua = "latest"
@@ -24,10 +21,6 @@ gnu-grep = "latest"
 
 [env]
 # Common environment variables
-
-# Task runner alias
-[alias]
-task = "go-task"
 
 [tasks.build]
 run = "cargo build --release"
